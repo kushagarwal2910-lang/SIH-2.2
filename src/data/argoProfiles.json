@@ -1,0 +1,85 @@
+[
+  {
+    "platform_id": "INCOIS-ARGO-2902695",
+    "wmo_id": "2902695",
+    "cycle_number": 48,
+    "timestamp": "2026-09-01T06:00:00Z",
+    "latitude": 14.5,
+    "longitude": 68.2,
+    "basin": "Arabian Sea",
+    "instrument_type": "ARGO",
+    "profile": [
+      { "depth": 5.0, "temp": 28.6, "salt": 36.3, "qc": 1 },
+      { "depth": 25.0, "temp": 28.4, "salt": 36.4, "qc": 1 },
+      { "depth": 50.0, "temp": 27.2, "salt": 36.5, "qc": 1 },
+      { "depth": 100.0, "temp": 22.8, "salt": 36.1, "qc": 1 },
+      { "depth": 150.0, "temp": 17.5, "salt": 35.8, "qc": 1 },
+      { "depth": 300.0, "temp": 13.2, "salt": 35.4, "qc": 1 },
+      { "depth": 500.0, "temp": 10.1, "salt": 35.1, "qc": 1 },
+      { "depth": 1000.0, "temp": 6.8, "salt": 34.9, "qc": 1 },
+      { "depth": 1500.0, "temp": 4.9, "salt": 34.8, "qc": 1 },
+      { "depth": 2000.0, "temp": 3.8, "salt": 34.7, "qc": 1 }
+    ]
+  },
+  {
+    "platform_id": "INCOIS-ARGO-2902710",
+    "wmo_id": "2902710",
+    "cycle_number": 112,
+    "timestamp": "2026-09-01T12:00:00Z",
+    "latitude": 11.2,
+    "longitude": 86.5,
+    "basin": "Bay of Bengal",
+    "instrument_type": "ARGO",
+    "profile": [
+      { "depth": 5.0, "temp": 29.4, "salt": 32.8, "qc": 1 },
+      { "depth": 25.0, "temp": 29.1, "salt": 33.1, "qc": 1 },
+      { "depth": 50.0, "temp": 28.1, "salt": 33.5, "qc": 1 },
+      { "depth": 100.0, "temp": 23.5, "salt": 34.6, "qc": 1 },
+      { "depth": 150.0, "temp": 18.2, "salt": 35.0, "qc": 1 },
+      { "depth": 200.0, "temp": 16.0, "salt": 35.2, "qc": 1 },
+      { "depth": 500.0, "temp": 9.8, "salt": 35.0, "qc": 1 },
+      { "depth": 1000.0, "temp": 6.5, "salt": 34.9, "qc": 1 },
+      { "depth": 1500.0, "temp": 4.8, "salt": 34.8, "qc": 1 },
+      { "depth": 2000.0, "temp": 3.9, "salt": 34.7, "qc": 1 }
+    ]
+  },
+  {
+    "platform_id": "INCOIS-ARGO-2902804",
+    "wmo_id": "2902804",
+    "cycle_number": 64,
+    "timestamp": "2026-09-01T18:00:00Z",
+    "latitude": 5.8,
+    "longitude": 77.4,
+    "basin": "Equatorial Indian Ocean",
+    "instrument_type": "ARGO",
+    "profile": [
+      { "depth": 5.0, "temp": 29.1, "salt": 34.8, "qc": 1 },
+      { "depth": 50.0, "temp": 28.5, "salt": 34.9, "qc": 1 },
+      { "depth": 100.0, "temp": 24.2, "salt": 35.3, "qc": 1 },
+      { "depth": 150.0, "temp": 19.1, "salt": 35.5, "qc": 1 },
+      { "depth": 300.0, "temp": 14.0, "salt": 35.3, "qc": 1 },
+      { "depth": 500.0, "temp": 10.5, "salt": 35.1, "qc": 1 },
+      { "depth": 1000.0, "temp": 7.0, "salt": 34.9, "qc": 1 },
+      { "depth": 2000.0, "temp": 3.7, "salt": 34.7, "qc": 1 }
+    ]
+  },
+  {
+    "platform_id": "INCOIS-ARGO-2902919",
+    "wmo_id": "2902919",
+    "cycle_number": 33,
+    "timestamp": "2026-09-02T00:00:00Z",
+    "latitude": 19.2,
+    "longitude": 66.8,
+    "basin": "Northern Arabian Sea",
+    "instrument_type": "ARGO",
+    "profile": [
+      { "depth": 5.0, "temp": 28.1, "salt": 36.7, "qc": 1 },
+      { "depth": 50.0, "temp": 26.9, "salt": 36.6, "qc": 1 },
+      { "depth": 100.0, "temp": 22.0, "salt": 36.2, "qc": 1 },
+      { "depth": 200.0, "temp": 16.5, "salt": 35.7, "qc": 1 },
+      { "depth": 500.0, "temp": 10.8, "salt": 35.3, "qc": 1 },
+      { "depth": 1000.0, "temp": 7.2, "salt": 35.0, "qc": 1 },
+      { "depth": 2000.0, "temp": 3.9, "salt": 34.8, "qc": 1 }
+    ]
+  }
+]

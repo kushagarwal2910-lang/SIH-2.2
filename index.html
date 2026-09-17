@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INCOIS 3D Ocean Data Visualizer (SIH26067)</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body class="h-screen w-screen flex flex-col bg-slate-950 text-white overflow-hidden select-none">
+  <!-- Top Navigation Header -->
+  <header class="h-14 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between px-4 z-20 shrink-0">
+    <div class="flex items-center space-x-3">
+      <div class="w-9 h-9 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-lg shadow-inner">
+        🌊
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="font-bold text-xs tracking-wider uppercase text-white">INCOIS <span class="text-cyan-400">3D Ocean Visualizer</span></h1>
+          <span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-cyan-950 text-cyan-400 border border-cyan-800/60">SIH26067</span>
+          <span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-emerald-950 text-emerald-400 border border-emerald-800/60">CF-1.8 Compliant</span>
+        </div>
+        <p class="text-[10px] text-slate-400">Ministry of Earth Sciences (MoES) • Indian National Centre for Ocean Information Services</p>
+      </div>
+    </div>
+
+    <!-- Right Header Actions -->
+    <div class="flex items-center space-x-2.5">
+      <div id="quick-stats-bar" class="hidden lg:flex items-center space-x-3 text-[11px] font-mono text-slate-400 bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-800">
+        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Basin: North Indian Ocean</span>
+        <span class="text-slate-600">|</span>
+        <span class="text-cyan-400">Depth: 0–2000m</span>
+        <span class="text-slate-600">|</span>
+        <span class="text-amber-400">In-Situ: Argo, Gliders, OMNI, CTD</span>
+      </div>
+
+      <!-- Action Buttons -->
+      <button id="btn-transect-tool" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-cyan-500/60 text-slate-200 font-semibold rounded-lg text-xs transition cursor-pointer">
+        <span>✂️</span> Vertical Transect
+      </button>
+
+      <button id="btn-data-upload" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-500/60 text-slate-200 font-semibold rounded-lg text-xs transition cursor-pointer">
+        <span>📥</span> Ingest Data
+      </button>
+
+      <button id="btn-export-ogc" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/60 text-slate-200 font-semibold rounded-lg text-xs transition cursor-pointer">
+        <span>🌐</span> OGC / Export
+      </button>
+
+      <button id="btn-story-mode" class="flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-lg text-xs shadow-lg transition transform active:scale-95 cursor-pointer">
+        <span>📖</span> Story Mode (Audio)
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Viewport Layout -->
+  <div class="flex flex-1 relative overflow-hidden">
+    <!-- Left Sidebar: Controls -->
+    <aside id="control-panel-container" class="w-80 glass-panel border-r border-slate-800 z-10 flex flex-col p-4 space-y-4 overflow-y-auto custom-scrollbar shrink-0"></aside>
+
+    <!-- Center/Right: 3D Ocean WebGL Viewport -->
+    <main id="viewport-container" class="flex-1 relative bg-slate-950 overflow-hidden">
+      <!-- Top Overlay Coordinates / Info Badge -->
+      <div class="absolute top-4 left-4 z-20 pointer-events-none bg-slate-900/85 backdrop-blur-md px-3.5 py-2.5 rounded-xl border border-slate-800 text-[11px] font-mono text-slate-300 shadow-2xl flex flex-col gap-1">
+        <div class="flex items-center gap-2">
+          <span class="text-cyan-400 font-bold">ROMS Indian Ocean 3D Model</span>
+          <span class="text-slate-500">•</span>
+          <span id="active-variable-badge" class="text-emerald-400 font-semibold">Potential Temp (°C)</span>
+        </div>
+        <div class="text-[10px] text-slate-400">
+          Domain: 0°N–25°N, 50°E–95°E (Arabian Sea, Bay of Bengal, Equatorial IO)
+        </div>
+        <!-- Live Cursor Spatial Inspection Sample HUD -->
+        <div id="cursor-sample-hud" class="text-[10px] text-cyan-300 pt-1 border-t border-slate-800/80 flex items-center gap-2">
+          <span class="text-slate-400">Hovering Point:</span>
+          <span id="hover-coord-text">Lat: 12.0°N • Lon: 75.0°E • Depth: 10m • Val: 29.4 °C</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tips Badge -->
+      <div class="absolute top-4 right-4 z-20 pointer-events-none bg-slate-900/75 backdrop-blur-md px-3.5 py-2 rounded-xl border border-slate-800/80 text-[10px] text-slate-400 shadow-lg">
+        <span class="text-cyan-400 font-semibold">Navigation:</span> Left-Drag: Rotate • Right-Drag: Pan • Scroll: Zoom • Click Floats/Gliders for Validation
+      </div>
+
+      <!-- Bottom Floating 4D Timeline Player -->
+      <div id="timeline-container" class="absolute bottom-5 left-1/2 -translate-x-1/2 z-20"></div>
+    </main>
+  </div>
+
+  <!-- Dynamic Modal Container for Validation Profile Charts, Transects & Stories -->
+  <div id="modal-container"></div>
+  <div id="story-hud-container"></div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

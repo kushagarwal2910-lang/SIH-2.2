@@ -1,0 +1,93 @@
+[
+  {
+    "platform_id": "INCOIS-OMNI-BD08",
+    "wmo_id": "23008",
+    "name": "OMNI Deep-Sea Buoy BD08",
+    "basin": "Northern Bay of Bengal",
+    "instrument_type": "MOORING",
+    "latitude": 18.20,
+    "longitude": 89.70,
+    "water_depth": 2150,
+    "timestamp": "2026-09-01T06:00:00Z",
+    "status": "OPERATIONAL",
+    "sensors": ["SST", "SSS", "Subsurface CTD string", "Current Meter", "Barometric Pressure", "Wind Speed"],
+    "profile": [
+      { "depth": 1.0, "temp": 29.8, "salt": 31.8, "oxygen": 205.2, "qc": 1 },
+      { "depth": 10.0, "temp": 29.6, "salt": 32.1, "oxygen": 204.8, "qc": 1 },
+      { "depth": 20.0, "temp": 29.2, "salt": 32.8, "oxygen": 202.1, "qc": 1 },
+      { "depth": 50.0, "temp": 26.5, "salt": 34.2, "oxygen": 165.4, "qc": 1 },
+      { "depth": 100.0, "temp": 22.1, "salt": 34.9, "oxygen": 98.2, "qc": 1 },
+      { "depth": 200.0, "temp": 15.6, "salt": 35.1, "oxygen": 42.0, "qc": 1 },
+      { "depth": 500.0, "temp": 9.8, "salt": 35.0, "oxygen": 22.5, "qc": 1 },
+      { "depth": 1000.0, "temp": 6.8, "salt": 34.8, "oxygen": 45.1, "qc": 1 }
+    ]
+  },
+  {
+    "platform_id": "INCOIS-OMNI-BD11",
+    "wmo_id": "23011",
+    "name": "OMNI Deep-Sea Buoy BD11",
+    "basin": "Central Bay of Bengal (Cyclone Alley)",
+    "instrument_type": "MOORING",
+    "latitude": 13.50,
+    "longitude": 84.00,
+    "water_depth": 3100,
+    "timestamp": "2026-09-01T06:00:00Z",
+    "status": "OPERATIONAL",
+    "sensors": ["SST", "SSS", "Subsurface CTD string", "Radiation", "Anemometer"],
+    "profile": [
+      { "depth": 1.0, "temp": 29.4, "salt": 33.2, "oxygen": 208.0, "qc": 1 },
+      { "depth": 15.0, "temp": 29.2, "salt": 33.4, "oxygen": 206.5, "qc": 1 },
+      { "depth": 40.0, "temp": 28.0, "salt": 34.2, "oxygen": 185.0, "qc": 1 },
+      { "depth": 75.0, "temp": 24.1, "salt": 34.8, "oxygen": 120.0, "qc": 1 },
+      { "depth": 150.0, "temp": 18.2, "salt": 35.0, "oxygen": 60.5, "qc": 1 },
+      { "depth": 300.0, "temp": 12.8, "salt": 35.0, "oxygen": 32.0, "qc": 1 },
+      { "depth": 750.0, "temp": 7.9, "salt": 34.9, "oxygen": 35.4, "qc": 1 },
+      { "depth": 1200.0, "temp": 5.2, "salt": 34.8, "oxygen": 55.0, "qc": 1 }
+    ]
+  },
+  {
+    "platform_id": "INCOIS-OMNI-AD07",
+    "wmo_id": "23007",
+    "name": "OMNI Deep-Sea Buoy AD07",
+    "basin": "Central Arabian Sea",
+    "instrument_type": "MOORING",
+    "latitude": 15.00,
+    "longitude": 69.00,
+    "water_depth": 3600,
+    "timestamp": "2026-09-01T06:00:00Z",
+    "status": "OPERATIONAL",
+    "sensors": ["SST", "High-Salinity Sensor", "Subsurface CTD", "ADCP Current Profiler"],
+    "profile": [
+      { "depth": 1.0, "temp": 28.7, "salt": 36.4, "oxygen": 212.0, "qc": 1 },
+      { "depth": 10.0, "temp": 28.5, "salt": 36.5, "oxygen": 210.5, "qc": 1 },
+      { "depth": 30.0, "temp": 28.1, "salt": 36.5, "oxygen": 205.0, "qc": 1 },
+      { "depth": 60.0, "temp": 25.4, "salt": 36.2, "oxygen": 140.0, "qc": 1 },
+      { "depth": 120.0, "temp": 20.2, "salt": 35.8, "oxygen": 75.0, "qc": 1 },
+      { "depth": 250.0, "temp": 14.8, "salt": 35.4, "oxygen": 28.0, "qc": 1 },
+      { "depth": 500.0, "temp": 10.5, "salt": 35.1, "oxygen": 18.2, "qc": 1 },
+      { "depth": 1000.0, "temp": 7.1, "salt": 34.8, "oxygen": 38.0, "qc": 1 }
+    ]
+  },
+  {
+    "platform_id": "INCOIS-OMNI-AD09",
+    "wmo_id": "23009",
+    "name": "OMNI Deep-Sea Buoy AD09",
+    "basin": "Southern Arabian Sea / Lakshadweep Sea",
+    "instrument_type": "MOORING",
+    "latitude": 8.30,
+    "longitude": 73.30,
+    "water_depth": 2400,
+    "timestamp": "2026-09-01T06:00:00Z",
+    "status": "OPERATIONAL",
+    "sensors": ["Equatorial Undercurrent ADCP", "CTD String", "Air-Sea Heat Flux"],
+    "profile": [
+      { "depth": 1.0, "temp": 29.2, "salt": 35.8, "oxygen": 209.0, "qc": 1 },
+      { "depth": 15.0, "temp": 29.1, "salt": 35.8, "oxygen": 208.0, "qc": 1 },
+      { "depth": 45.0, "temp": 28.4, "salt": 35.7, "oxygen": 195.0, "qc": 1 },
+      { "depth": 80.0, "temp": 24.5, "salt": 35.5, "oxygen": 130.0, "qc": 1 },
+      { "depth": 150.0, "temp": 19.5, "salt": 35.3, "oxygen": 65.0, "qc": 1 },
+      { "depth": 300.0, "temp": 13.5, "salt": 35.1, "oxygen": 25.0, "qc": 1 },
+      { "depth": 700.0, "temp": 8.4, "salt": 34.9, "oxygen": 28.0, "qc": 1 }
+    ]
+  }
+]

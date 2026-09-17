@@ -1,0 +1,50 @@
+[
+  {
+    "platform_id": "CRUISE-SK392-STN04",
+    "wmo_id": "SK392-04",
+    "name": "ORV Sagar Kanya Hydrographic CTD Stn 04",
+    "vessel": "ORV Sagar Kanya (MoES/NCAOR)",
+    "basin": "Bay of Bengal High-Gradient Transect",
+    "instrument_type": "CTD",
+    "latitude": 16.50,
+    "longitude": 86.80,
+    "timestamp": "2026-08-28T14:30:00Z",
+    "status": "VALIDATED",
+    "profile": [
+      { "depth": 2.0, "temp": 29.7, "salt": 32.4, "oxygen": 206.5, "ph": 8.12, "nitrate": 0.12, "qc": 1 },
+      { "depth": 25.0, "temp": 29.5, "salt": 32.8, "oxygen": 204.0, "ph": 8.10, "nitrate": 0.18, "qc": 1 },
+      { "depth": 50.0, "temp": 28.2, "salt": 34.0, "oxygen": 178.0, "ph": 8.01, "nitrate": 1.45, "qc": 1 },
+      { "depth": 75.0, "temp": 24.5, "salt": 34.7, "oxygen": 125.0, "ph": 7.92, "nitrate": 6.80, "qc": 1 },
+      { "depth": 100.0, "temp": 21.0, "salt": 34.9, "oxygen": 78.0, "ph": 7.82, "nitrate": 14.20, "qc": 1 },
+      { "depth": 150.0, "temp": 17.5, "salt": 35.0, "oxygen": 38.0, "ph": 7.74, "nitrate": 22.50, "qc": 1 },
+      { "depth": 250.0, "temp": 13.9, "salt": 35.0, "oxygen": 18.5, "ph": 7.68, "nitrate": 29.10, "qc": 1 },
+      { "depth": 500.0, "temp": 9.4, "salt": 34.9, "oxygen": 12.0, "ph": 7.62, "nitrate": 34.80, "qc": 1 },
+      { "depth": 800.0, "temp": 7.2, "salt": 34.8, "oxygen": 24.0, "ph": 7.66, "nitrate": 36.20, "qc": 1 },
+      { "depth": 1200.0, "temp": 5.4, "salt": 34.8, "oxygen": 48.0, "ph": 7.72, "nitrate": 35.00, "qc": 1 },
+      { "depth": 1800.0, "temp": 3.2, "salt": 34.7, "oxygen": 85.0, "ph": 7.80, "nitrate": 32.50, "qc": 1 }
+    ]
+  },
+  {
+    "platform_id": "CRUISE-SSD085-STN12",
+    "wmo_id": "SSD085-12",
+    "name": "RV Sindhu Sadhana Upwelling Cast Stn 12",
+    "vessel": "RV Sindhu Sadhana (CSIR-NIO)",
+    "basin": "Southwest Coast of India (Malabar Upwelling)",
+    "instrument_type": "CTD",
+    "latitude": 10.50,
+    "longitude": 75.20,
+    "timestamp": "2026-08-30T09:15:00Z",
+    "status": "VALIDATED",
+    "profile": [
+      { "depth": 2.0, "temp": 27.2, "salt": 35.5, "oxygen": 218.0, "ph": 8.16, "nitrate": 4.50, "qc": 1 },
+      { "depth": 15.0, "temp": 26.5, "salt": 35.6, "oxygen": 195.0, "ph": 8.08, "nitrate": 7.20, "qc": 1 },
+      { "depth": 35.0, "temp": 23.0, "salt": 35.7, "oxygen": 140.0, "ph": 7.95, "nitrate": 12.80, "qc": 1 },
+      { "depth": 60.0, "temp": 19.5, "salt": 35.5, "oxygen": 72.0, "ph": 7.82, "nitrate": 18.90, "qc": 1 },
+      { "depth": 100.0, "temp": 16.0, "salt": 35.3, "oxygen": 25.0, "ph": 7.70, "nitrate": 26.40, "qc": 1 },
+      { "depth": 200.0, "temp": 13.2, "salt": 35.1, "oxygen": 14.0, "ph": 7.64, "nitrate": 31.00, "qc": 1 },
+      { "depth": 400.0, "temp": 10.1, "salt": 35.0, "oxygen": 16.5, "ph": 7.63, "nitrate": 33.50, "qc": 1 },
+      { "depth": 800.0, "temp": 7.0, "salt": 34.8, "oxygen": 32.0, "ph": 7.69, "nitrate": 35.20, "qc": 1 },
+      { "depth": 1500.0, "temp": 4.1, "salt": 34.7, "oxygen": 70.0, "ph": 7.78, "nitrate": 33.00, "qc": 1 }
+    ]
+  }
+]
