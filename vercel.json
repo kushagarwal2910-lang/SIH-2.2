@@ -2,5 +2,19 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
-  "framework": "vite"
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/api/argo/:path*",
+      "destination": "https://erddap.ifremer.fr/erddap/:path*"
+    },
+    {
+      "source": "/api/marine/:path*",
+      "destination": "https://marine-api.open-meteo.com/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
