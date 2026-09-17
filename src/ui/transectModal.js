@@ -40,29 +40,29 @@ export class TransectModal {
     const palette = isTemp ? 'thermal' : currentVar === 'salt' ? 'haline' : 'chlorophyll';
 
     modalRoot.innerHTML = `
-      <div id="transect-backdrop" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fadeIn">
-        <div class="relative w-full max-w-4xl rounded-2xl glass-panel p-6 text-white shadow-2xl border border-slate-700 max-h-[92vh] flex flex-col overflow-hidden">
+      <div id="transect-backdrop" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-2 sm:p-4 animate-fadeIn">
+        <div class="relative w-full max-w-4xl rounded-2xl glass-panel p-3.5 sm:p-6 text-white shadow-2xl border border-slate-700 max-h-[92vh] flex flex-col overflow-y-auto custom-scrollbar">
           
           <!-- Header -->
-          <div class="flex items-center justify-between pb-3 border-b border-slate-800 shrink-0">
-            <div class="flex items-center space-x-3">
-              <div class="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-xl">
+          <div class="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-slate-800 shrink-0">
+            <div class="flex items-center space-x-2 sm:space-x-3">
+              <div class="p-1.5 sm:p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-lg sm:text-xl">
                 ✂️
               </div>
               <div>
-                <h3 class="font-bold text-sm tracking-wide text-white">Arbitrary Vertical Ocean Transect (Cross-Section)</h3>
-                <p class="text-[11px] text-slate-400">Depth vs Distance vertical profile contour across the North Indian Ocean</p>
+                <h3 class="font-bold text-xs sm:text-sm tracking-wide text-white">Arbitrary Vertical Ocean Transect (Cross-Section)</h3>
+                <p class="text-[10px] sm:text-[11px] text-slate-400">Depth vs Distance vertical profile contour across the North Indian Ocean</p>
               </div>
             </div>
-            <button id="btn-close-transect" class="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer text-lg">
+            <button id="btn-close-transect" class="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer text-base sm:text-lg">
               ✕
             </button>
           </div>
 
           <!-- Route Selector Pills -->
-          <div class="flex flex-wrap gap-2 my-3 shrink-0">
+          <div class="flex flex-wrap gap-1.5 sm:gap-2 my-2 sm:my-3 shrink-0">
             ${routes.map((r, i) => `
-              <button data-idx="${i}" class="route-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
+              <button data-idx="${i}" class="route-btn px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-semibold transition cursor-pointer ${
                 i === 0
                   ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/50'
                   : 'bg-slate-900 text-slate-400 hover:bg-slate-800 border border-slate-800'

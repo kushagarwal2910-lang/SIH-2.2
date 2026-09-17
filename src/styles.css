@@ -1,19 +1,27 @@
 :root {
   --bg-primary: #030712;
-  --panel-bg: rgba(15, 23, 42, 0.85);
+  --panel-bg: rgba(15, 23, 42, 0.88);
   --border-color: rgba(51, 65, 85, 0.6);
   --accent-cyan: #06b6d4;
   --accent-amber: #f59e0b;
 }
 
-body {
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
   background-color: var(--bg-primary);
   color: #f8fafc;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   overflow: hidden;
   user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 }
 
 .glass-panel {
@@ -26,6 +34,7 @@ body {
 
 .custom-scrollbar::-webkit-scrollbar {
   width: 5px;
+  height: 5px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -44,12 +53,41 @@ body {
 /* Custom range slider styling */
 input[type="range"] {
   accent-color: #06b6d4;
+  touch-action: pan-x;
 }
 
 /* Canvas container */
+#viewport-container {
+  touch-action: none;
+}
+
 #viewport-container canvas {
   display: block;
   width: 100% !important;
   height: 100% !important;
   outline: none;
+}
+
+/* Modal responsive constraints */
+#modal-container {
+  position: relative;
+  z-index: 50;
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.18s ease-out forwards;
+}
+
+/* Safe areas for mobile devices */
+@supports (padding: max(0px)) {
+  header {
+    padding-left: max(0.5rem, env(safe-area-inset-left));
+    padding-right: max(0.5rem, env(safe-area-inset-right));
+  }
 }

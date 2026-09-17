@@ -75,21 +75,21 @@ export class StoryModal {
     const modalRoot = document.getElementById('modal-container');
 
     modalRoot.innerHTML = `
-      <div id="story-backdrop" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fadeIn">
-        <div class="relative w-full max-w-2xl rounded-2xl glass-panel p-6 text-white shadow-2xl border border-slate-700">
+      <div id="story-backdrop" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-2 sm:p-4 animate-fadeIn">
+        <div class="relative w-full max-w-2xl rounded-2xl glass-panel p-4 sm:p-6 text-white shadow-2xl border border-slate-700 max-h-[92vh] flex flex-col overflow-y-auto custom-scrollbar">
           
           <!-- Header -->
-          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-            <div class="flex items-center gap-3">
-              <div class="p-2 rounded-xl bg-purple-500/10 border border-purple-500/30 text-xl">
+          <div class="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-slate-800 shrink-0">
+            <div class="flex items-center gap-2 sm:gap-3">
+              <div class="p-1.5 sm:p-2 rounded-xl bg-purple-500/10 border border-purple-500/30 text-lg sm:text-xl">
                 🎓
               </div>
               <div>
-                <h3 class="font-bold text-sm tracking-wide text-white">Public Outreach & Science Communication</h3>
-                <p class="text-[11px] text-slate-400">Interactive 3D guided tours with voice narration for schools, colleges & exhibitions</p>
+                <h3 class="font-bold text-xs sm:text-sm tracking-wide text-white">Public Outreach & Science Communication</h3>
+                <p class="text-[10px] sm:text-[11px] text-slate-400">Interactive 3D guided tours with voice narration for schools, colleges & exhibitions</p>
               </div>
             </div>
-            <button id="btn-close-story" class="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer text-lg">
+            <button id="btn-close-story" class="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer text-base sm:text-lg">
               ✕
             </button>
           </div>
@@ -150,14 +150,14 @@ export class StoryModal {
     const isLast = stepIdx === story.steps.length - 1;
 
     hudContainer.innerHTML = `
-      <div class="fixed top-20 left-1/2 -translate-x-1/2 z-40 w-full max-w-xl px-4 animate-fadeIn">
-        <div class="glass-panel rounded-2xl p-5 text-white shadow-2xl border border-cyan-500/40 relative">
+      <div class="fixed top-16 sm:top-20 left-1/2 -translate-x-1/2 z-40 w-full max-w-xl px-2.5 sm:px-4 animate-fadeIn">
+        <div class="glass-panel rounded-2xl p-3.5 sm:p-5 text-white shadow-2xl border border-cyan-500/40 relative">
           
           <!-- Top Bar with Chapter & Audio Controls -->
           <div class="flex items-center justify-between pb-2 border-b border-slate-800 text-xs">
-            <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-cyan-400 border border-cyan-800">${story.badge}</span>
-              <span class="font-mono text-slate-400 text-[11px]">Chapter ${stepIdx + 1} of ${story.steps.length}</span>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              <span class="px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-bold bg-cyan-950 text-cyan-400 border border-cyan-800">${story.badge}</span>
+              <span class="font-mono text-slate-400 text-[10px] sm:text-[11px]">Chapter ${stepIdx + 1}/${story.steps.length}</span>
             </div>
             
             <!-- Audio Voice & Equalizer -->

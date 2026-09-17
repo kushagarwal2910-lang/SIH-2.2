@@ -7,43 +7,43 @@ export class DataUploadModal {
     const modalRoot = document.getElementById('modal-container');
 
     modalRoot.innerHTML = `
-      <div id="upload-backdrop" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fadeIn">
-        <div class="relative w-full max-w-2xl glass-panel rounded-2xl p-6 text-white shadow-2xl border border-slate-700">
+      <div id="upload-backdrop" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-2 sm:p-4 animate-fadeIn">
+        <div class="relative w-full max-w-2xl glass-panel rounded-2xl p-4 sm:p-6 text-white shadow-2xl border border-slate-700 max-h-[92vh] flex flex-col overflow-y-auto custom-scrollbar">
           
           <!-- Header -->
-          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-            <div class="flex items-center gap-3">
-              <div class="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-xl">
+          <div class="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-slate-800 shrink-0">
+            <div class="flex items-center gap-2 sm:gap-3">
+              <div class="p-1.5 sm:p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-lg sm:text-xl">
                 📥
               </div>
               <div>
-                <h3 class="font-bold text-sm tracking-wide text-white">Multi-Format Ocean Data Ingestion</h3>
-                <p class="text-[11px] text-slate-400">Automated CF-compliant NetCDF (.nc), CSV in-situ profiles & JSON ingestion</p>
+                <h3 class="font-bold text-xs sm:text-sm tracking-wide text-white">Multi-Format Ocean Data Ingestion</h3>
+                <p class="text-[10px] sm:text-[11px] text-slate-400">Automated CF-compliant NetCDF (.nc), CSV in-situ profiles & JSON ingestion</p>
               </div>
             </div>
-            <button id="btn-close-upload" class="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer text-lg">
+            <button id="btn-close-upload" class="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer text-base sm:text-lg">
               ✕
             </button>
           </div>
 
           <!-- Format Selector Badges -->
-          <div class="flex gap-2 my-3">
-            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-cyan-950/80 border border-cyan-500/40 text-cyan-300">
+          <div class="flex flex-wrap gap-1.5 sm:gap-2 my-2 sm:my-3">
+            <span class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-bold bg-cyan-950/80 border border-cyan-500/40 text-cyan-300">
               ⚡ NetCDF-3 / NetCDF-4 (.nc)
             </span>
-            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-950/80 border border-amber-500/40 text-amber-300">
+            <span class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-bold bg-amber-950/80 border border-amber-500/40 text-amber-300">
               📊 CSV / WMO Delimited Text
             </span>
-            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-purple-950/80 border border-purple-500/40 text-purple-300">
+            <span class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-bold bg-purple-950/80 border border-purple-500/40 text-purple-300">
               🌐 GeoJSON / WMO JSON
             </span>
           </div>
 
           <!-- Drag and drop zone -->
-          <div id="drop-zone" class="border-2 border-dashed border-slate-700 hover:border-cyan-400 rounded-xl p-6 text-center cursor-pointer transition bg-slate-900/60 hover:bg-slate-800/40 flex flex-col items-center justify-center">
-            <div class="text-3xl mb-2">📂</div>
+          <div id="drop-zone" class="border-2 border-dashed border-slate-700 hover:border-cyan-400 rounded-xl p-4 sm:p-6 text-center cursor-pointer transition bg-slate-900/60 hover:bg-slate-800/40 flex flex-col items-center justify-center">
+            <div class="text-2xl sm:text-3xl mb-1.5 sm:mb-2">📂</div>
             <p class="text-xs font-semibold text-slate-200">Drag & Drop your NetCDF (.nc), CSV or JSON file here</p>
-            <p class="text-[10px] text-slate-400 mt-1">Supports INCOIS ROMS/NEMO model fields, Argo profiles, OMNI buoys, and Glider dive logs</p>
+            <p class="text-[10px] text-slate-400 mt-1">Supports INCOIS ROMS/NEMO model fields, Argo profiles, OMNI buoys, and Gliders</p>
             <input id="file-input" type="file" accept=".nc,.cdf,.csv,.txt,.json" class="hidden">
           </div>
 

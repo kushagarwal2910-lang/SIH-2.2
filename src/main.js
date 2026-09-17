@@ -116,6 +116,37 @@ class App {
   }
 
   initHeaderActions() {
+    // 0. Mobile Drawer & Desktop Fullscreen Sidebar Toggle
+    const toggleBtn = document.getElementById('btn-toggle-sidebar');
+    const sidebar = document.getElementById('control-panel-container');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (toggleBtn && sidebar) {
+      toggleBtn.addEventListener('click', () => {
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) {
+          const isClosed = sidebar.classList.contains('-translate-x-full');
+          if (isClosed) {
+            sidebar.classList.remove('-translate-x-full');
+            if (backdrop) backdrop.classList.remove('hidden');
+          } else {
+            sidebar.classList.add('-translate-x-full');
+            if (backdrop) backdrop.classList.add('hidden');
+          }
+        } else {
+          // On desktop, toggle collapse for immersive 3D view
+          sidebar.classList.toggle('hidden');
+          setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
+        }
+      });
+
+      if (backdrop) {
+        backdrop.addEventListener('click', () => {
+          sidebar.classList.add('-translate-x-full');
+          backdrop.classList.add('hidden');
+        });
+      }
+    }
+
     // 1. Story Mode (Audio-Guided Outreach)
     const storyBtn = document.getElementById('btn-story-mode');
     if (storyBtn) {

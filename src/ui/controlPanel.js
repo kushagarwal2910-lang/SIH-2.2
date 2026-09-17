@@ -51,6 +51,16 @@ export class ControlPanel {
     this.container.innerHTML = `
       <div class="space-y-3.5 text-xs select-none">
         
+        <!-- Mobile Drawer Close Header (visible on mobile only) -->
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800 md:hidden">
+          <span class="font-bold text-slate-200 flex items-center gap-1.5 text-xs">
+            <span>⚙️</span> Controls & Layers
+          </span>
+          <button id="btn-close-sidebar-drawer" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold cursor-pointer">
+            ✕ Close
+          </button>
+        </div>
+
         <!-- 1. Ocean Variables -->
         <div>
           <div class="flex items-center justify-between mb-1.5">
@@ -428,6 +438,16 @@ export class ControlPanel {
         });
       }
     });
+
+    const closeDrawerBtn = this.container.querySelector('#btn-close-sidebar-drawer');
+    if (closeDrawerBtn) {
+      closeDrawerBtn.addEventListener('click', () => {
+        const sidebar = document.getElementById('control-panel-container');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        if (sidebar) sidebar.classList.add('-translate-x-full');
+        if (backdrop) backdrop.classList.add('hidden');
+      });
+    }
   }
 
   setExaggeration(val) {

@@ -12,64 +12,64 @@ export class ProfileChartModal {
     const isHighCorr = validationReport.metrics.pearsonR >= 0.85;
 
     modalRoot.innerHTML = `
-      <div id="modal-backdrop" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fadeIn">
-        <div class="relative w-full max-w-3xl rounded-2xl glass-panel p-6 text-white shadow-2xl border border-slate-700 max-h-[90vh] flex flex-col overflow-hidden">
+      <div id="modal-backdrop" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-2 sm:p-4 animate-fadeIn">
+        <div class="relative w-full max-w-3xl rounded-2xl glass-panel p-4 sm:p-6 text-white shadow-2xl border border-slate-700 max-h-[92vh] flex flex-col overflow-y-auto custom-scrollbar">
           
           <!-- Header -->
-          <div class="flex items-center justify-between pb-4 border-b border-slate-800 shrink-0">
-            <div class="flex items-center space-x-3">
-              <div class="p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xl">
+          <div class="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-800 shrink-0">
+            <div class="flex items-center space-x-2 sm:space-x-3">
+              <div class="p-1.5 sm:p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-lg sm:text-xl">
                 🟡
               </div>
               <div>
-                <div class="flex items-center gap-2">
-                  <h3 class="font-bold text-sm tracking-wide text-white">In-Situ vs Model Profile Co-Validation</h3>
-                  <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-950 text-cyan-400 border border-cyan-800">${validationReport.platform_id}</span>
+                <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                  <h3 class="font-bold text-xs sm:text-sm tracking-wide text-white">In-Situ vs Model Profile Co-Validation</h3>
+                  <span class="px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-mono bg-cyan-950 text-cyan-400 border border-cyan-800">${validationReport.platform_id}</span>
                 </div>
-                <p class="text-[11px] text-slate-400 font-mono mt-0.5">
-                  Location: ${validationReport.latitude}°N, ${validationReport.longitude}°E • Basin: ${validationReport.basin} • Timestamp: ${validationReport.timestamp}
+                <p class="text-[10px] sm:text-[11px] text-slate-400 font-mono mt-0.5">
+                  Location: ${validationReport.latitude}°N, ${validationReport.longitude}°E • Basin: ${validationReport.basin}
                 </p>
               </div>
             </div>
-            <button id="btn-close-modal" class="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer text-lg">
+            <button id="btn-close-modal" class="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer text-base sm:text-lg">
               ✕
             </button>
           </div>
 
           <!-- Statistical Metrics Grid -->
-          <div class="grid grid-cols-4 gap-3 my-4 shrink-0 font-mono text-xs">
-            <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex flex-col shadow-inner">
-              <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Root Mean Sq Error (RMSE)</span>
-              <span class="text-amber-400 font-bold text-base mt-1">${validationReport.metrics.rmse} ${unit}</span>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 my-3 sm:my-4 shrink-0 font-mono text-xs">
+            <div class="bg-slate-900/90 p-2.5 sm:p-3 rounded-xl border border-slate-800 flex flex-col shadow-inner">
+              <span class="text-slate-400 text-[9px] sm:text-[10px] uppercase font-bold tracking-wider truncate">RMSE</span>
+              <span class="text-amber-400 font-bold text-sm sm:text-base mt-1">${validationReport.metrics.rmse} ${unit}</span>
             </div>
-            <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex flex-col shadow-inner">
-              <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Mean Model Bias</span>
-              <span class="text-cyan-400 font-bold text-base mt-1">${validationReport.metrics.bias > 0 ? '+' : ''}${validationReport.metrics.bias} ${unit}</span>
+            <div class="bg-slate-900/90 p-2.5 sm:p-3 rounded-xl border border-slate-800 flex flex-col shadow-inner">
+              <span class="text-slate-400 text-[9px] sm:text-[10px] uppercase font-bold tracking-wider truncate">Mean Bias</span>
+              <span class="text-cyan-400 font-bold text-sm sm:text-base mt-1">${validationReport.metrics.bias > 0 ? '+' : ''}${validationReport.metrics.bias} ${unit}</span>
             </div>
-            <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex flex-col shadow-inner">
-              <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Pearson Correlation (r)</span>
-              <span class="${isHighCorr ? 'text-emerald-400' : 'text-rose-400'} font-bold text-base mt-1">
+            <div class="bg-slate-900/90 p-2.5 sm:p-3 rounded-xl border border-slate-800 flex flex-col shadow-inner">
+              <span class="text-slate-400 text-[9px] sm:text-[10px] uppercase font-bold tracking-wider truncate">Pearson (r)</span>
+              <span class="${isHighCorr ? 'text-emerald-400' : 'text-rose-400'} font-bold text-sm sm:text-base mt-1">
                 ${validationReport.metrics.pearsonR} ${isHighCorr ? '✓' : ''}
               </span>
             </div>
-            <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex flex-col shadow-inner">
-              <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Sample Depths</span>
-              <span class="text-slate-200 font-bold text-base mt-1">${validationReport.metrics.point_count} levels (0–2000m)</span>
+            <div class="bg-slate-900/90 p-2.5 sm:p-3 rounded-xl border border-slate-800 flex flex-col shadow-inner">
+              <span class="text-slate-400 text-[9px] sm:text-[10px] uppercase font-bold tracking-wider truncate">Sample Levels</span>
+              <span class="text-slate-200 font-bold text-sm sm:text-base mt-1">${validationReport.metrics.point_count} pts (0–2000m)</span>
             </div>
           </div>
 
           <!-- Chart Area -->
-          <div class="h-72 w-full bg-slate-950 p-3 rounded-xl border border-slate-800 shadow-inner shrink-0 relative">
+          <div class="h-56 sm:h-72 w-full bg-slate-950 p-2 sm:p-3 rounded-xl border border-slate-800 shadow-inner shrink-0 relative">
             <canvas id="profile-chart-canvas"></canvas>
           </div>
 
           <!-- Point Data Table & Actions -->
-          <div class="mt-4 flex items-center justify-between pt-3 border-t border-slate-800 shrink-0">
-            <div class="text-[11px] text-slate-400">
-              <span class="text-amber-400 font-semibold">● In-Situ Profile</span> vs <span class="text-cyan-400 font-semibold">--- ROMS Model</span>. Quality Flag: QC=1 (Verified).
+          <div class="mt-3 sm:mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-3 border-t border-slate-800 shrink-0">
+            <div class="text-[10px] sm:text-[11px] text-slate-400">
+              <span class="text-amber-400 font-semibold">● In-Situ Profile</span> vs <span class="text-cyan-400 font-semibold">--- ROMS Model</span> (QC=1 Verified)
             </div>
             <button id="btn-export-csv" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium rounded-lg text-xs transition cursor-pointer">
-              <span>📥</span> Export Validation CSV
+              <span>📥</span> Export CSV
             </button>
           </div>
         </div>
