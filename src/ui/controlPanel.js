@@ -186,6 +186,9 @@ export class ControlPanel {
           <span class="font-bold text-slate-300 text-xs flex items-center gap-1.5 uppercase tracking-wider">
             <span>🎛️</span> Visualization Controls
           </span>
+          <button id="btn-close-controls-drawer" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold lg:hidden cursor-pointer">
+            ✕ Close
+          </button>
         </div>
 
         <!-- Primary CTA: Inspect 3D Water Block -->
@@ -398,6 +401,16 @@ export class ControlPanel {
         } else if (this.onOpenWaterCube) {
           this.onOpenWaterCube(13.32, 86.82, this.selectedVar);
         }
+      });
+    }
+
+    // Mobile close
+    const closeRightBtn = this.rightContainer.querySelector('#btn-close-controls-drawer');
+    if (closeRightBtn) {
+      closeRightBtn.addEventListener('click', () => {
+        this.rightContainer.classList.add('translate-x-full');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        if (backdrop) backdrop.classList.add('hidden');
       });
     }
   }

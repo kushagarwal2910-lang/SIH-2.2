@@ -64,6 +64,10 @@
         <span>🌐</span> <span class="hidden sm:inline">OGC</span>
       </button>
 
+      <button id="btn-toggle-controls" class="flex lg:hidden items-center gap-1 px-2 sm:px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-cyan-500/60 text-slate-200 font-semibold rounded-lg text-xs transition cursor-pointer" title="Visualization Controls">
+        <span>🎛️</span> <span class="hidden xs:inline">Controls</span>
+      </button>
+
       <button id="btn-story-mode" class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-lg text-xs shadow-lg transition transform active:scale-95 cursor-pointer" title="Audio-Guided Science Stories">
         <span>📖</span> <span class="hidden sm:inline">Stories</span>
       </button>
@@ -72,8 +76,8 @@
 
   <!-- Main Viewport Layout: Dual Sidebars + 3D Earth Center -->
   <div class="flex flex-1 relative overflow-hidden">
-    <!-- Backdrop overlay for mobile drawer -->
-    <div id="sidebar-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-20 hidden md:hidden transition-opacity"></div>
+    <!-- Backdrop overlay for mobile drawers -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-20 hidden transition-opacity"></div>
 
     <!-- Left Sidebar: Layer Catalog (Sliding drawer on mobile, Docked sidebar on desktop) -->
     <aside id="layer-catalog-container" class="fixed md:static inset-y-14 left-0 w-72 max-w-[85vw] md:max-w-none md:w-72 glass-panel md:border-r border-slate-800 z-30 flex flex-col p-3.5 space-y-4 overflow-y-auto custom-scrollbar shrink-0 shadow-2xl md:shadow-none transition-all duration-300 -translate-x-full md:translate-x-0"></aside>
@@ -102,8 +106,8 @@
       <div id="timeline-container" class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-full max-w-[96vw] sm:max-w-fit flex justify-center"></div>
     </main>
 
-    <!-- Right Sidebar: Visualization & Inspection Controls -->
-    <aside id="controls-sidebar-container" class="hidden lg:flex w-80 glass-panel border-l border-slate-800 z-20 flex-col p-3.5 space-y-4 overflow-y-auto custom-scrollbar shrink-0 shadow-2xl"></aside>
+    <!-- Right Sidebar: Visualization & Inspection Controls (Responsive Drawer on Mobile/Tablet, Docked on Desktop) -->
+    <aside id="controls-sidebar-container" class="fixed lg:static inset-y-14 right-0 w-80 max-w-[85vw] lg:max-w-none lg:w-80 glass-panel lg:border-l border-slate-800 z-30 flex flex-col p-3.5 space-y-4 overflow-y-auto custom-scrollbar shrink-0 shadow-2xl lg:shadow-none transition-all duration-300 translate-x-full lg:translate-x-0"></aside>
   </div>
 
   <!-- Dynamic Modal Containers -->

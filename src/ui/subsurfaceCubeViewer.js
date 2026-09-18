@@ -62,18 +62,18 @@ export class SubsurfaceCubeViewer {
       </header>
 
       <!-- Main Studio Workspace -->
-      <div class="flex flex-1 relative overflow-hidden">
+      <div class="flex flex-col md:flex-row flex-1 relative overflow-hidden">
         <!-- 3D Canvas Container -->
-        <div id="cube-viewport" class="flex-1 relative bg-slate-950 overflow-hidden cursor-grab active:cursor-grabbing">
+        <div id="cube-viewport" class="h-[42vh] md:h-full flex-1 relative bg-slate-950 overflow-hidden cursor-grab active:cursor-grabbing">
           <!-- Floating Orientation HUD -->
-          <div class="absolute top-4 left-4 z-10 pointer-events-none bg-slate-900/80 backdrop-blur-md px-3 py-2 rounded-xl border border-slate-800 text-[11px] font-mono text-slate-300 flex flex-col gap-1">
+          <div class="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 pointer-events-none bg-slate-900/80 backdrop-blur-md px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl border border-slate-800 text-[10px] sm:text-[11px] font-mono text-slate-300 flex flex-col gap-0.5 sm:gap-1">
             <div class="text-cyan-400 font-bold">1° × 1° Water Column Prism</div>
-            <div class="text-[10px] text-slate-400">Vertical Exaggeration: 35x • Depth: 0–2000m</div>
+            <div class="text-[9px] sm:text-[10px] text-slate-400">Vertical Exaggeration: 35x • Depth: 0–2000m</div>
           </div>
         </div>
 
         <!-- Right Inspection & Data Readings Panel -->
-        <aside class="w-80 sm:w-96 bg-slate-900/80 backdrop-blur-md border-l border-slate-800 flex flex-col p-4 space-y-4 overflow-y-auto custom-scrollbar shrink-0 shadow-2xl">
+        <aside class="h-[58vh] md:h-full w-full md:w-80 lg:w-96 bg-slate-900/80 backdrop-blur-md border-t md:border-t-0 md:border-l border-slate-800 flex flex-col p-3 sm:p-4 space-y-3 sm:space-y-4 overflow-y-auto custom-scrollbar shrink-0 shadow-2xl">
           <!-- Active Readings Card -->
           <div class="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 flex flex-col space-y-3">
             <div class="flex items-center justify-between border-b border-slate-800 pb-2">
@@ -259,6 +259,20 @@ export class SubsurfaceCubeViewer {
     this.buildDepthGrid();
     this.buildSlicePlane();
     this.buildSubsurfaceParticles();
+
+    // Responsive Canvas Resize Observer
+    const handleResize = () => {
+      if (!container || !this.cubeRenderer || !this.cubeCamera) return;
+      const nw = container.clientWidth;
+      const nh = container.clientHeight;
+      if (nw === 0 || nh === 0) return;
+      this.cubeCamera.aspect = nw / nh;
+      this.cubeCamera.updateProjectionMatrix();
+      this.cubeRenderer.setSize(nw, nh);
+    };
+    window.addEventListener('resize', handleResize);
+    const ro = new ResizeObserver(handleResize);
+    ro.observe(container);
 
     // Render loop
     const animate = () => {
@@ -514,6 +528,18 @@ export class SubsurfaceCubeViewer {
 
     setTimeout(() => {
       this.initThree();
+      if (this.cubeRenderer && this.cubeCamera) {
+        const container = this.modalEl.querySelector('#cube-viewport');
+        if (container) {
+          const nw = container.clientWidth;
+          const nh = container.clientHeight;
+          if (nw > 0 && nh > 0) {
+            this.cubeCamera.aspect = nw / nh;
+            this.cubeCamera.updateProjectionMatrix();
+            this.cubeRenderer.setSize(nw, nh);
+          }
+        }
+      }
       this.updateCubeTextures();
       this.updateReadout();
       this.updateSlicePlane();

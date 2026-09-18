@@ -162,8 +162,11 @@ class App {
 
   initHeaderActions() {
     const toggleBtn = document.getElementById('btn-toggle-sidebar');
+    const toggleControlsBtn = document.getElementById('btn-toggle-controls');
     const sidebar = document.getElementById('layer-catalog-container');
+    const rightSidebar = document.getElementById('controls-sidebar-container');
     const backdrop = document.getElementById('sidebar-backdrop');
+
     if (toggleBtn && sidebar) {
       toggleBtn.addEventListener('click', () => {
         const isMobile = window.innerWidth < 768;
@@ -171,6 +174,7 @@ class App {
           const isClosed = sidebar.classList.contains('-translate-x-full');
           if (isClosed) {
             sidebar.classList.remove('-translate-x-full');
+            if (rightSidebar) rightSidebar.classList.add('translate-x-full');
             if (backdrop) backdrop.classList.remove('hidden');
           } else {
             sidebar.classList.add('-translate-x-full');
@@ -181,13 +185,31 @@ class App {
           setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
         }
       });
+    }
 
-      if (backdrop) {
-        backdrop.addEventListener('click', () => {
-          sidebar.classList.add('-translate-x-full');
-          backdrop.classList.add('hidden');
-        });
-      }
+    if (toggleControlsBtn && rightSidebar) {
+      toggleControlsBtn.addEventListener('click', () => {
+        const isMobile = window.innerWidth < 1024;
+        if (isMobile) {
+          const isClosed = rightSidebar.classList.contains('translate-x-full');
+          if (isClosed) {
+            rightSidebar.classList.remove('translate-x-full');
+            if (sidebar) sidebar.classList.add('-translate-x-full');
+            if (backdrop) backdrop.classList.remove('hidden');
+          } else {
+            rightSidebar.classList.add('translate-x-full');
+            if (backdrop) backdrop.classList.add('hidden');
+          }
+        }
+      });
+    }
+
+    if (backdrop) {
+      backdrop.addEventListener('click', () => {
+        if (sidebar) sidebar.classList.add('-translate-x-full');
+        if (rightSidebar) rightSidebar.classList.add('translate-x-full');
+        backdrop.classList.add('hidden');
+      });
     }
 
     // 1. Story Mode
