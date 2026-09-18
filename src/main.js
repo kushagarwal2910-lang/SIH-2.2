@@ -149,16 +149,15 @@ class App {
   initTimeline() {
     const timelineContainer = document.getElementById('timeline-container');
     const timeSteps = this.oceanEngine.getMetadata().time_steps;
-    const currentUtcHour = new Date().getUTCHours();
-    const currentSynopticStep = Math.min(timeSteps.length - 1, Math.floor(currentUtcHour / 3));
+    const latestStep = Math.max(0, timeSteps.length - 1);
 
     this.timeline = new TimelinePlayer(
       timelineContainer,
       timeSteps,
       (tIdx) => this.handleTimeChange(tIdx),
-      currentSynopticStep
+      latestStep
     );
-    this.currentTimeStep = currentSynopticStep;
+    this.currentTimeStep = latestStep;
   }
 
   initHeaderActions() {
