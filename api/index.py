@@ -1,16 +1,15 @@
 """
-INCOIS 3D Ocean Data Visualization Platform - Operational REST & OPeNDAP Backend Service
+INCOIS 3D Ocean Data Visualization Platform - Vercel Serverless API Service
 Ministry of Earth Sciences (MoES) - Indian National Centre for Ocean Information Services
 
-Provides automated slicing, point extraction, and OPeNDAP emulation for CF-compliant NetCDF ocean model fields.
+Provides automated slicing, point extraction, and live proxying for INCOIS THREDDS ncWMS & Global Argo GDAC.
 """
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, PlainTextResponse
+from fastapi.responses import JSONResponse, PlainTextResponse, Response
 import numpy as np
-import os
-import io
+import urllib.request
 
 app = FastAPI(
     title="INCOIS 3D Ocean Data REST / OPeNDAP API",
@@ -32,12 +31,25 @@ LAT_BOUNDS = [0.0, 25.0]
 LON_BOUNDS = [50.0, 95.0]
 DEPTHS = [2, 10, 25, 50, 75, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000]
 
+INCOIS_THREDDS_BASE = "https://incois.gov.in/thredds"
+ACTIVE_INCOIS_RUN = "20260917"
+
+ACTIVE_INCOIS_FILES = {
+    "currents": f"osf/currents/CURRENTS_NIO_{ACTIVE_INCOIS_RUN}.nc",
+    "sst": f"osf/winds/SST_NIO_{ACTIVE_INCOIS_RUN}.nc",
+    "mld": f"osf/winds/MLD_NIO_{ACTIVE_INCOIS_RUN}.nc",
+    "ww3": f"osf/ww3/rsmc_combined_ww3_{ACTIVE_INCOIS_RUN}.nc"
+}
+
 @app.get("/")
+@app.get("/api")
 def root():
     return {
         "service": "INCOIS 3D Ocean Data REST & OPeNDAP API",
         "institution": "Indian National Centre for Ocean Information Services (MoES)",
         "conventions": "CF-1.8",
+        "status": "OPERATIONAL",
+        "deployment": "Vercel Serverless Function",
         "endpoints": [
             "/api/metadata",
             "/api/slice",
@@ -49,17 +61,8 @@ def root():
         ]
     }
 
-INCOIS_THREDDS_BASE = "https://incois.gov.in/thredds"
-ACTIVE_INCOIS_RUN = "20260917"
-
-ACTIVE_INCOIS_FILES = {
-    "currents": f"osf/currents/CURRENTS_NIO_{ACTIVE_INCOIS_RUN}.nc",
-    "sst": f"osf/winds/SST_NIO_{ACTIVE_INCOIS_RUN}.nc",
-    "mld": f"osf/winds/MLD_NIO_{ACTIVE_INCOIS_RUN}.nc",
-    "ww3": f"osf/ww3/rsmc_combined_ww3_{ACTIVE_INCOIS_RUN}.nc"
-}
-
 @app.get("/api/incois/status")
+@app.get("/api/backend/api/incois/status")
 def get_incois_status():
     """Returns live operational status of connected INCOIS THREDDS & GDAC services"""
     return {
@@ -80,6 +83,7 @@ def get_incois_status():
     }
 
 @app.get("/api/incois/wms")
+@app.get("/api/backend/api/incois/wms")
 def proxy_incois_wms(
     path: str = Query(..., description="Relative NetCDF path under osf/"),
     layers: str = Query("SST"),
@@ -91,9 +95,6 @@ def proxy_incois_wms(
     transparent: str = Query("TRUE")
 ):
     """Direct live WMS proxy to official INCOIS THREDDS server"""
-    import urllib.request
-    from fastapi.responses import Response
-
     clean_path = path.lstrip('/')
     target_url = (
         f"{INCOIS_THREDDS_BASE}/wms/{clean_path}"
@@ -116,8 +117,8 @@ def proxy_incois_wms(
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"INCOIS TDS Upstream Error: {str(e)}")
 
-
 @app.get("/api/metadata")
+@app.get("/api/backend/api/metadata")
 def get_metadata():
     """CF-1.8 Compliant Ocean Model Metadata"""
     return {
@@ -141,6 +142,7 @@ def get_metadata():
     }
 
 @app.get("/api/profile")
+@app.get("/api/backend/api/profile")
 def get_point_profile(
     lat: float = Query(..., ge=0.0, le=25.0, description="Latitude N"),
     lon: float = Query(..., ge=50.0, le=95.0, description="Longitude E"),
@@ -191,6 +193,7 @@ def opendap_dds():
     return PlainTextResponse(dds, media_type="text/plain")
 
 @app.post("/api/upload-netcdf")
+@app.post("/api/backend/api/upload-netcdf")
 async def upload_netcdf(file: UploadFile = File(...)):
     """Upload and validate arbitrary NetCDF ocean model dataset"""
     if not file.filename.endswith(('.nc', '.cdf')):
@@ -205,7 +208,3 @@ async def upload_netcdf(file: UploadFile = File(...)):
         "file_size_kb": round(file_size_kb, 2),
         "message": "NetCDF file validated successfully. CF-1.8 dimensions verified."
     }
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)

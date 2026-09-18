@@ -22,8 +22,15 @@ export class OceanDataEngine {
       this.lonBounds[0] + (i / (this.lonCount - 1)) * (this.lonBounds[1] - this.lonBounds[0])
     );
 
+    // Operational forecast timeline starting from current live UTC date
+    const baseDate = new Date();
+    baseDate.setUTCMinutes(0, 0, 0);
+    const utcHours = baseDate.getUTCHours();
+    const cycleHour = Math.floor(utcHours / 6) * 6; // Synoptic hours 00, 06, 12, 18 UTC
+    baseDate.setUTCHours(cycleHour);
+
     this.times = Array.from({ length: this.timeSteps }, (_, i) => {
-      const d = new Date('2026-09-01T00:00:00Z');
+      const d = new Date(baseDate.getTime());
       d.setUTCHours(d.getUTCHours() + i * 6);
       return d.toISOString();
     });

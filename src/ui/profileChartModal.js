@@ -68,13 +68,25 @@ export class ProfileChartModal {
             <div class="text-[10px] sm:text-[11px] text-slate-400">
               <span class="text-amber-400 font-semibold">● In-Situ Profile</span> vs <span class="text-cyan-400 font-semibold">--- ROMS Model</span> (QC=1 Verified)
             </div>
-            <button id="btn-export-csv" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium rounded-lg text-xs transition cursor-pointer">
-              <span>📥</span> Export CSV
-            </button>
+            <div class="flex items-center gap-2">
+              <button id="btn-modal-open-cube" class="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-lg text-xs transition cursor-pointer shadow-md">
+                <span>🧊</span> Inspect 3D Water Block
+              </button>
+              <button id="btn-export-csv" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium rounded-lg text-xs transition cursor-pointer">
+                <span>📥</span> Export CSV
+              </button>
+            </div>
           </div>
         </div>
       </div>
     `;
+
+    // Hook up open cube
+    modalRoot.querySelector('#btn-modal-open-cube').addEventListener('click', () => {
+      if (validationReport.onOpenWaterCube) {
+        validationReport.onOpenWaterCube(validationReport.latitude, validationReport.longitude, validationReport.variable);
+      }
+    });
 
     // Render Chart.js
     const canvas = document.getElementById('profile-chart-canvas');

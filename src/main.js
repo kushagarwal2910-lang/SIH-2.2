@@ -3,16 +3,17 @@ import { ColormapEngine } from './engine/colormapEngine.js';
 import { ValidationEngine } from './engine/validationEngine.js';
 import { SensorRegistry } from './engine/sensorRegistry.js';
 import { ThreeScene } from './renderer/threeScene.js';
-import { VolumeRaymarcher } from './renderer/volumeRaymarcher.js';
 import { VectorFieldFlow } from './renderer/vectorFieldFlow.js';
 import { InstrumentMarkers } from './renderer/instrumentMarkers.js';
 import { ControlPanel } from './ui/controlPanel.js';
 import { TimelinePlayer } from './ui/timelinePlayer.js';
 import { ProfileChartModal } from './ui/profileChartModal.js';
+import { SubsurfaceCubeViewer } from './ui/subsurfaceCubeViewer.js';
 import { StoryModal } from './ui/storyModal.js';
 import { TransectModal } from './ui/transectModal.js';
 import { DataUploadModal } from './ui/dataUploadModal.js';
 import { OgcExportModal } from './ui/ogcExportModal.js';
+import { LiveApiService } from './engine/liveApiService.js';
 
 import initialArgoProfiles from './data/argoProfiles.json';
 import initialGliderMissions from './data/gliderMissions.json';
@@ -30,26 +31,30 @@ class App {
     this.activeStory = null;
     this.storyStepIdx = 0;
 
-    // Load in-situ observational networks into sensor registry
+    // Load in-situ observational networks
     this.sensorRegistry.load(initialArgoProfiles, 'ARGO');
     this.sensorRegistry.load(initialGliderMissions, 'GLIDER');
     this.sensorRegistry.load(initialMooringBuoys, 'MOORING');
     this.sensorRegistry.load(initialCtdCasts, 'CTD');
 
+    // Micro 3D Sub-Surface Ocean Cube Studio
+    this.subsurfaceCubeViewer = new SubsurfaceCubeViewer(this.oceanEngine, ColormapEngine);
+
     this.initViewport();
     this.initControls();
     this.initTimeline();
     this.initHeaderActions();
+    this.initCameraPresets();
     this.initCursorHUD();
     this.startLoop();
     this.updateData();
+    this.syncLiveObservingNetwork();
   }
 
   initViewport() {
     const viewportContainer = document.getElementById('viewport-container');
     this.threeScene = new ThreeScene(viewportContainer);
-    this.volumeRaymarcher = new VolumeRaymarcher(this.threeScene.oceanGroup);
-    this.vectorFlow = new VectorFieldFlow(this.threeScene.oceanGroup);
+    this.vectorFlow = new VectorFieldFlow(this.threeScene.oceanGroup, this.threeScene.globeRadius);
 
     // Multi-Sensor Observing Networks Marker Manager
     this.instrumentMarkers = new InstrumentMarkers(
@@ -73,37 +78,72 @@ class App {
   }
 
   initControls() {
-    const controlContainer = document.getElementById('control-panel-container');
-    this.controlPanel = new ControlPanel(
-      controlContainer,
-      (v, pal) => this.handleVariableChange(v, pal),
-      (pal, opts) => this.handleColormapChange(pal, opts),
-      (exag) => this.threeScene.setExaggeration(exag),
-      (op) => this.volumeRaymarcher.setParams({ opacity: op }),
-      (iso, val) => this.volumeRaymarcher.setParams({ isIsosurface: iso, isovalue: val }),
-      (clip) => this.volumeRaymarcher.setParams({ clipDepth: clip }),
-      (layers) => {
-        // Geospatial Layers
+    const leftContainer = document.getElementById('layer-catalog-container');
+    const rightContainer = document.getElementById('controls-sidebar-container');
+
+    this.controlPanel = new ControlPanel({
+      leftContainer,
+      rightContainer,
+      onVariableChange: (v, pal) => this.handleVariableChange(v, pal),
+      onColormapChange: (pal, opts) => this.handleColormapChange(pal, opts),
+      onExaggerationChange: (exag) => this.threeScene.setExaggeration(exag),
+      onOpacityChange: (op) => this.updateData(),
+      onLayerToggle: (layers) => {
         this.threeScene.setCoastlineVisible(layers.coastline);
         this.threeScene.setEezVisible(layers.eez);
-        this.threeScene.setBathymetryVisible(layers.bathymetry);
-
-        // Vector currents
         this.vectorFlow.setVisible(layers.vectors);
-
-        // Observing Networks
-        this.instrumentMarkers.setVisible({
-          argo: layers.argo,
-          gliders: layers.gliders,
-          moorings: layers.moorings,
-          ctd: layers.ctd,
-        });
+        this.instrumentMarkers.setVisible(layers);
       },
-      (variable, min, max) => {
-        // Dynamic Range Change
-        this.updateData();
-      }
-    );
+      onOpenWaterCube: (lat, lon, varName) => {
+        const sensor = this.controlPanel?.activeSensor || null;
+        this.subsurfaceCubeViewer.open(lat, lon, varName || this.currentVar, sensor);
+      },
+    });
+  }
+
+  initCameraPresets() {
+    const btnGlobe = document.getElementById('btn-cam-globe');
+    const btnBasin = document.getElementById('btn-cam-basin');
+    const btnArabian = document.getElementById('btn-cam-arabian');
+    const btnBengal = document.getElementById('btn-cam-bengal');
+
+    const updateActivePill = (activeBtn) => {
+      [btnGlobe, btnBasin, btnArabian, btnBengal].forEach((btn) => {
+        if (!btn) return;
+        btn.className =
+          btn === activeBtn
+            ? 'px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 transition flex items-center gap-1 cursor-pointer font-bold'
+            : 'px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1 cursor-pointer';
+      });
+    };
+
+    if (btnGlobe) {
+      btnGlobe.addEventListener('click', () => {
+        this.threeScene.goToPreset('globe');
+        updateActivePill(btnGlobe);
+      });
+    }
+
+    if (btnBasin) {
+      btnBasin.addEventListener('click', () => {
+        this.threeScene.goToPreset('basin');
+        updateActivePill(btnBasin);
+      });
+    }
+
+    if (btnArabian) {
+      btnArabian.addEventListener('click', () => {
+        this.threeScene.goToPreset('arabianSea');
+        updateActivePill(btnArabian);
+      });
+    }
+
+    if (btnBengal) {
+      btnBengal.addEventListener('click', () => {
+        this.threeScene.goToPreset('bayOfBengal');
+        updateActivePill(btnBengal);
+      });
+    }
   }
 
   initTimeline() {
@@ -116,9 +156,8 @@ class App {
   }
 
   initHeaderActions() {
-    // 0. Mobile Drawer & Desktop Fullscreen Sidebar Toggle
     const toggleBtn = document.getElementById('btn-toggle-sidebar');
-    const sidebar = document.getElementById('control-panel-container');
+    const sidebar = document.getElementById('layer-catalog-container');
     const backdrop = document.getElementById('sidebar-backdrop');
     if (toggleBtn && sidebar) {
       toggleBtn.addEventListener('click', () => {
@@ -133,7 +172,6 @@ class App {
             if (backdrop) backdrop.classList.add('hidden');
           }
         } else {
-          // On desktop, toggle collapse for immersive 3D view
           sidebar.classList.toggle('hidden');
           setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
         }
@@ -147,7 +185,7 @@ class App {
       }
     }
 
-    // 1. Story Mode (Audio-Guided Outreach)
+    // 1. Story Mode
     const storyBtn = document.getElementById('btn-story-mode');
     if (storyBtn) {
       storyBtn.addEventListener('click', () => {
@@ -163,7 +201,7 @@ class App {
       });
     }
 
-    // 3. Multi-Format Data Ingestion (NetCDF, CSV, JSON)
+    // 3. Multi-Format Data Ingestion
     const uploadBtn = document.getElementById('btn-data-upload');
     if (uploadBtn) {
       uploadBtn.addEventListener('click', () => {
@@ -174,7 +212,6 @@ class App {
           },
           (parsedNetCdf) => {
             this.oceanEngine.loadNetCdfDataset(parsedNetCdf);
-            // Select first variable if available
             if (parsedNetCdf.availableVariables?.[0]) {
               this.currentVar = parsedNetCdf.availableVariables[0].id;
             }
@@ -184,7 +221,7 @@ class App {
       });
     }
 
-    // 4. OGC WMS/WCS & Standards Export Tool
+    // 4. OGC WMS/WCS Export
     const exportBtn = document.getElementById('btn-export-ogc');
     if (exportBtn) {
       exportBtn.addEventListener('click', () => {
@@ -202,10 +239,10 @@ class App {
       const nx = (e.clientX - rect.left) / rect.width;
       const ny = (e.clientY - rect.top) / rect.height;
 
-      // Project screen normalized coordinate to ocean domain
+      // Project approx cursor coords in Indian Ocean
       const lon = (50.0 + nx * 45.0).toFixed(1);
       const lat = (25.0 - ny * 25.0).toFixed(1);
-      const depth = 10; // Surface sample
+      const depth = 10;
 
       if (hudText && lat >= 0 && lat <= 25 && lon >= 50 && lon <= 95) {
         const val = this.oceanEngine.samplePoint(this.currentVar, this.currentTimeIdx, parseFloat(lat), parseFloat(lon), depth);
@@ -215,24 +252,53 @@ class App {
     });
   }
 
-  updateData() {
+  async syncLiveObservingNetwork() {
+    try {
+      const liveFloats = await LiveApiService.fetchLiveArgoFloats();
+      if (liveFloats && liveFloats.length > 0) {
+        this.sensorRegistry.load(liveFloats, 'ARGO');
+        this.refreshInstrumentMarkers();
+        const indicator = document.getElementById('live-incois-indicator');
+        if (indicator) {
+          indicator.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> INCOIS THREDDS & ARGO LIVE (${liveFloats.length} floats)`;
+        }
+      }
+    } catch (err) {
+      console.warn('Live Argo sync skipped:', err);
+    }
+  }
+
+  async updateData() {
     const vol = this.oceanEngine.get3DVolume(this.currentVar, this.currentTimeIdx);
     const lut = ColormapEngine.getLut(this.currentPalette, 256, {
       isReversed: this.controlPanel?.isReversed || false,
       isLogScale: this.controlPanel?.isLogScale || false,
     });
-    this.volumeRaymarcher.updateVolume(vol, lut);
+
+    let liveWmsImg = null;
+    try {
+      liveWmsImg = await LiveApiService.fetchIncoisWmsImage(this.currentVar);
+    } catch {
+      // Offline or variable not hosted on WMS (e.g., chlorophyll / salt)
+    }
+
+    // Update 3D Earth Globe ocean scalar texture
+    this.threeScene.updateOceanData(vol, lut, this.controlPanel?.opacity || 0.85, liveWmsImg);
 
     // Update top header badge
     const badge = document.getElementById('active-variable-badge');
     if (badge) {
       const varNames = {
-        temp: 'Potential Temp (°C)',
+        temp: liveWmsImg ? 'SST (Live INCOIS ncWMS)' : 'Potential Temp (°C)',
         salt: 'Practical Salinity (PSU)',
         chlorophyll: 'Chlorophyll-a (mg/m³)',
-        u: 'Eastward Velocity U (m/s)',
-        w: 'Vertical Velocity W (m/s)',
+        current: liveWmsImg ? 'Currents (Live INCOIS ncWMS)' : 'Current Velocity (m/s)',
+        u: 'Current Velocity (m/s)',
+        w: 'Upwelling Velocity (m/s)',
         oxygen: 'Dissolved Oxygen OMZ (µmol/kg)',
+        mld: 'Mixed Layer Depth (Live INCOIS ncWMS)',
+        d20: 'D20 Isotherm Depth (Live INCOIS ncWMS)',
+        waves: 'Significant Wave Height (Live INCOIS WW3)',
       };
       badge.textContent = varNames[this.currentVar] || this.currentVar;
     }
@@ -246,9 +312,7 @@ class App {
 
   handleColormapChange(pal, opts = {}) {
     this.currentPalette = pal;
-    const lut = ColormapEngine.getLut(this.currentPalette, 256, opts);
-    const vol = this.oceanEngine.get3DVolume(this.currentVar, this.currentTimeIdx);
-    this.volumeRaymarcher.updateVolume(vol, lut);
+    this.updateData();
   }
 
   handleTimeChange(tIdx) {
@@ -257,6 +321,12 @@ class App {
   }
 
   handleSelectInstrument(item, type) {
+    // 1. Show docked telemetry in Right Sidebar
+    this.controlPanel.showSensorTelemetry(item, type);
+
+    // 2. Open full validation chart with CTA to launch 3D Subsurface Cube Viewer
+    const openCubeFn = (lat, lon, v) => this.subsurfaceCubeViewer.open(lat, lon, v || this.currentVar, item);
+
     if (type === 'GLIDER') {
       const report = ValidationEngine.validateGlider(
         item,
@@ -275,16 +345,17 @@ class App {
         timestamp: item.waypoints[0].timestamp,
         metrics: report.metrics,
         comparison: report.comparison,
+        onOpenWaterCube: openCubeFn,
       };
       ProfileChartModal.show(formatted);
     } else {
-      // Argo, OMNI Mooring, or CTD
       const report = ValidationEngine.validateArgo(
         item,
         this.oceanEngine,
         this.currentVar,
         this.currentTimeIdx
       );
+      report.onOpenWaterCube = openCubeFn;
       ProfileChartModal.show(report);
     }
   }
@@ -310,13 +381,6 @@ class App {
     }
     if (step.exaggeration) {
       this.threeScene.setExaggeration(step.exaggeration);
-      this.controlPanel.setExaggeration(step.exaggeration);
-    }
-    if (step.isIsosurface !== undefined) {
-      this.volumeRaymarcher.setParams({
-        isIsosurface: step.isIsosurface,
-        isovalue: step.isovalue || 0.5,
-      });
     }
     if (step.camera) {
       this.threeScene.flyTo(step.camera.pos, step.camera.target);
@@ -354,13 +418,16 @@ class App {
 
   handleExitStory() {
     this.activeStory = null;
-    this.threeScene.flyTo([0, 160, 240], [0, -20, 0]);
+    this.threeScene.goToPreset('basin');
   }
 
   startLoop() {
     const tick = () => {
       requestAnimationFrame(tick);
       this.vectorFlow.update();
+      if (this.instrumentMarkers) {
+        this.instrumentMarkers.update();
+      }
     };
     tick();
   }

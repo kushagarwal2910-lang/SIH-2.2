@@ -52,7 +52,7 @@ export class TimelinePlayer {
   }
 
   formatTime(isoStr) {
-    if (!isoStr) return '2026-09-01 00:00 UTC';
+    if (!isoStr) return new Date().toUTCString().replace('GMT', 'UTC');
     try {
       const d = new Date(isoStr);
       return d.toUTCString().replace('GMT', 'UTC');

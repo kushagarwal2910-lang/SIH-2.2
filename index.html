@@ -10,94 +10,103 @@
 </head>
 <body class="h-screen w-screen flex flex-col bg-slate-950 text-white overflow-hidden select-none">
   <!-- Top Navigation Header -->
-  <header class="h-14 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between px-2 sm:px-4 z-30 shrink-0">
-    <div class="flex items-center space-x-2 sm:space-x-3">
-      <!-- Mobile / Desktop Sidebar Toggle Button -->
-      <button id="btn-toggle-sidebar" class="p-1.5 sm:p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-cyan-400 text-cyan-400 transition cursor-pointer flex items-center gap-1.5" title="Toggle Controls">
+  <header class="h-14 bg-slate-950/95 border-b border-slate-800 flex items-center justify-between px-2 sm:px-4 z-30 shrink-0 gap-2">
+    <!-- Left Branding & Mobile Toggles -->
+    <div class="flex items-center space-x-2 shrink-0">
+      <button id="btn-toggle-sidebar" class="p-1.5 sm:p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-cyan-400 text-cyan-400 transition cursor-pointer flex items-center gap-1.5" title="Toggle Layers">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-        <span class="hidden sm:inline text-[11px] font-semibold text-slate-200">Controls</span>
+        <span class="hidden sm:inline text-[11px] font-semibold text-slate-200">Layers</span>
       </button>
 
       <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-base sm:text-lg shadow-inner">
         🌊
       </div>
       <div>
-        <div class="flex items-center gap-1.5 sm:gap-2">
-          <h1 class="font-bold text-[11px] sm:text-xs tracking-wider uppercase text-white">INCOIS <span class="text-cyan-400">3D Ocean</span><span class="hidden sm:inline text-cyan-400"> Visualizer</span></h1>
+        <div class="flex items-center gap-1.5">
+          <h1 class="font-bold text-[11px] sm:text-xs tracking-wider uppercase text-white">INCOIS <span class="text-cyan-400">3D Ocean</span></h1>
           <span class="px-1.5 py-0.5 rounded text-[8px] sm:text-[9px] font-mono bg-cyan-950 text-cyan-400 border border-cyan-800/60">SIH26067</span>
           <span class="hidden md:inline px-1.5 py-0.5 rounded text-[9px] font-mono bg-emerald-950 text-emerald-400 border border-emerald-800/60">CF-1.8</span>
+          <div id="live-incois-indicator" class="hidden xl:flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-[9px] font-mono shadow-sm cursor-pointer" title="Direct Live OGC WMS & OPeNDAP feed from INCOIS THREDDS server">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>INCOIS THREDDS LIVE</span>
+          </div>
         </div>
-        <p class="hidden lg:block text-[10px] text-slate-400">Ministry of Earth Sciences (MoES) • Indian National Centre for Ocean Information Services</p>
       </div>
     </div>
 
-    <!-- Right Header Actions -->
-    <div class="flex items-center space-x-1 sm:space-x-2">
-      <div id="quick-stats-bar" class="hidden xl:flex items-center space-x-3 text-[11px] font-mono text-slate-400 bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-800">
-        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Basin: North Indian Ocean</span>
-        <span class="text-slate-600">|</span>
-        <span class="text-cyan-400">Depth: 0–2000m</span>
-        <span class="text-slate-600">|</span>
-        <span class="text-amber-400">In-Situ: Argo, Gliders, OMNI, CTD</span>
-      </div>
+    <!-- Center: Quick Camera Presets (Orbital Fly-to) -->
+    <div class="hidden md:flex items-center space-x-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-800 text-[11px] font-semibold">
+      <button id="btn-cam-globe" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1 cursor-pointer" title="Space Perspective">
+        <span>🌍</span> Full Globe
+      </button>
+      <button id="btn-cam-basin" class="px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 transition flex items-center gap-1 cursor-pointer font-bold" title="Default Indian Ocean View">
+        <span>🇮🇳</span> Indian Basin
+      </button>
+      <button id="btn-cam-arabian" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1 cursor-pointer" title="Somali Current & Upwelling">
+        <span>🌊</span> Arabian Sea
+      </button>
+      <button id="btn-cam-bengal" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1 cursor-pointer" title="Freshwater Plume & Cyclones">
+        <span>🌀</span> Bay of Bengal
+      </button>
+    </div>
 
-      <!-- Action Buttons -->
-      <button id="btn-transect-tool" class="flex items-center gap-1 px-2 sm:px-2.5 md:px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-cyan-500/60 text-slate-200 font-semibold rounded-lg text-[11px] sm:text-xs transition cursor-pointer" title="Vertical Transect Cross-Section">
+    <!-- Right Header Actions -->
+    <div class="flex items-center space-x-1 sm:space-x-2 shrink-0">
+      <button id="btn-transect-tool" class="flex items-center gap-1 px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-cyan-500/60 text-slate-200 font-semibold rounded-lg text-xs transition cursor-pointer" title="Vertical Transect Cross-Section">
         <span>✂️</span> <span class="hidden sm:inline">Transect</span>
       </button>
 
-      <button id="btn-data-upload" class="flex items-center gap-1 px-2 sm:px-2.5 md:px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-500/60 text-slate-200 font-semibold rounded-lg text-[11px] sm:text-xs transition cursor-pointer" title="Ingest NetCDF / CSV / JSON Data">
+      <button id="btn-data-upload" class="flex items-center gap-1 px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-500/60 text-slate-200 font-semibold rounded-lg text-xs transition cursor-pointer" title="Ingest NetCDF / CSV / JSON Data">
         <span>📥</span> <span class="hidden sm:inline">Ingest</span>
       </button>
 
-      <button id="btn-export-ogc" class="flex items-center gap-1 px-2 sm:px-2.5 md:px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/60 text-slate-200 font-semibold rounded-lg text-[11px] sm:text-xs transition cursor-pointer" title="OGC WMS/WCS & GeoJSON Export">
+      <button id="btn-export-ogc" class="flex items-center gap-1 px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/60 text-slate-200 font-semibold rounded-lg text-xs transition cursor-pointer" title="OGC WMS/WCS & GeoJSON Export">
         <span>🌐</span> <span class="hidden sm:inline">OGC</span>
       </button>
 
-      <button id="btn-story-mode" class="flex items-center gap-1 px-2 sm:px-2.5 md:px-3.5 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-lg text-[11px] sm:text-xs shadow-lg transition transform active:scale-95 cursor-pointer" title="Audio-Guided Science Stories">
-        <span>📖</span> <span class="hidden xs:inline">Story</span><span class="hidden lg:inline"> (Audio)</span>
+      <button id="btn-story-mode" class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-lg text-xs shadow-lg transition transform active:scale-95 cursor-pointer" title="Audio-Guided Science Stories">
+        <span>📖</span> <span class="hidden sm:inline">Stories</span>
       </button>
     </div>
   </header>
 
-  <!-- Main Viewport Layout -->
+  <!-- Main Viewport Layout: Dual Sidebars + 3D Earth Center -->
   <div class="flex flex-1 relative overflow-hidden">
-    <!-- Backdrop overlay for mobile sidebar -->
+    <!-- Backdrop overlay for mobile drawer -->
     <div id="sidebar-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-20 hidden md:hidden transition-opacity"></div>
 
-    <!-- Left Sidebar: Controls (Sliding drawer on mobile, Docked sidebar on desktop) -->
-    <aside id="control-panel-container" class="fixed md:static inset-y-14 left-0 w-80 max-w-[85vw] md:max-w-none md:w-80 glass-panel md:border-r border-slate-800 z-30 flex flex-col p-3.5 sm:p-4 space-y-4 overflow-y-auto custom-scrollbar shrink-0 shadow-2xl md:shadow-none transition-all duration-300 -translate-x-full md:translate-x-0"></aside>
+    <!-- Left Sidebar: Layer Catalog (Sliding drawer on mobile, Docked sidebar on desktop) -->
+    <aside id="layer-catalog-container" class="fixed md:static inset-y-14 left-0 w-72 max-w-[85vw] md:max-w-none md:w-72 glass-panel md:border-r border-slate-800 z-30 flex flex-col p-3.5 space-y-4 overflow-y-auto custom-scrollbar shrink-0 shadow-2xl md:shadow-none transition-all duration-300 -translate-x-full md:translate-x-0"></aside>
 
-    <!-- Center/Right: 3D Ocean WebGL Viewport -->
+    <!-- Center: 3D Earth Globe WebGL Viewport -->
     <main id="viewport-container" class="flex-1 relative bg-slate-950 overflow-hidden w-full h-full">
-      <!-- Top Overlay Coordinates / Info Badge -->
-      <div class="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 pointer-events-none bg-slate-900/85 backdrop-blur-md px-2.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl border border-slate-800 text-[10px] sm:text-[11px] font-mono text-slate-300 shadow-2xl flex flex-col gap-0.5 sm:gap-1 max-w-[85vw] sm:max-w-md">
-        <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-          <span class="text-cyan-400 font-bold">ROMS Indian Ocean 3D</span>
-          <span class="text-slate-500">•</span>
+      <!-- Sleek Unified Top Overlay Badge -->
+      <div class="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 pointer-events-none bg-slate-900/80 backdrop-blur-md px-3.5 py-2 rounded-xl border border-slate-800 text-[11px] font-mono text-slate-300 shadow-xl flex flex-col gap-1 max-w-sm">
+        <div class="flex items-center gap-2">
+          <span class="text-cyan-400 font-bold">ROMS 3D Earth</span>
+          <span class="text-slate-600">•</span>
           <span id="active-variable-badge" class="text-emerald-400 font-semibold">Potential Temp (°C)</span>
         </div>
-        <div class="hidden sm:block text-[9px] sm:text-[10px] text-slate-400">
-          Domain: 0°N–25°N, 50°E–95°E (North Indian Ocean)
-        </div>
-        <!-- Live Cursor Spatial Inspection Sample HUD -->
-        <div id="cursor-sample-hud" class="text-[9px] sm:text-[10px] text-cyan-300 pt-1 border-t border-slate-800/80 flex items-center gap-1.5 flex-wrap">
-          <span class="text-slate-400">Point:</span>
-          <span id="hover-coord-text">Lat: 12.0°N • Lon: 75.0°E • Depth: 10m • Val: 29.4 °C</span>
+        <div id="cursor-sample-hud" class="text-[10px] text-cyan-300 font-mono flex items-center gap-1.5">
+          <span class="text-slate-400">Sample:</span>
+          <span id="hover-coord-text">Lat: 13.3°N • Lon: 86.8°E • 28.6 °C</span>
         </div>
       </div>
 
-      <!-- Navigation Tips Badge (Desktop only) -->
-      <div class="hidden lg:block absolute top-4 right-4 z-10 pointer-events-none bg-slate-900/75 backdrop-blur-md px-3.5 py-2 rounded-xl border border-slate-800/80 text-[10px] text-slate-400 shadow-lg">
-        <span class="text-cyan-400 font-semibold">Navigation:</span> Left-Drag: Rotate • Right-Drag: Pan • Scroll: Zoom • Click Floats for Validation
+      <!-- Navigation Tips (Discreet Bottom-Left) -->
+      <div class="hidden xl:block absolute bottom-5 left-4 z-10 pointer-events-none bg-slate-900/70 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800/60 text-[10px] text-slate-400 font-mono">
+        Left-Drag: Rotate • Scroll: Zoom • Click Sensor: Inspect
       </div>
 
-      <!-- Bottom Floating 4D Timeline Player -->
-      <div id="timeline-container" class="absolute bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-10 w-full max-w-[96vw] sm:max-w-fit flex justify-center"></div>
+      <!-- Bottom Floating Unified Depth & Timeline Bar -->
+      <div id="timeline-container" class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-full max-w-[96vw] sm:max-w-fit flex justify-center"></div>
     </main>
+
+    <!-- Right Sidebar: Visualization & Inspection Controls -->
+    <aside id="controls-sidebar-container" class="hidden lg:flex w-80 glass-panel border-l border-slate-800 z-20 flex-col p-3.5 space-y-4 overflow-y-auto custom-scrollbar shrink-0 shadow-2xl"></aside>
   </div>
 
-  <!-- Dynamic Modal Container for Validation Profile Charts, Transects & Stories -->
+  <!-- Dynamic Modal Containers -->
   <div id="modal-container"></div>
   <div id="story-hud-container"></div>
 

@@ -23,6 +23,21 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/marine/, ''),
       },
+      '/api/incois-thredds': {
+        target: 'https://incois.gov.in',
+        changeOrigin: true,
+        secure: false,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'Referer': 'https://incois.gov.in/site/services/osf.jsp',
+        },
+        rewrite: (path) => path.replace(/^\/api\/incois-thredds/, '/thredds'),
+      },
+      '/api/backend': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/backend/, ''),
+      },
     },
   },
   preview: {
