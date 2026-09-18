@@ -22,16 +22,16 @@ export class OceanDataEngine {
       this.lonBounds[0] + (i / (this.lonCount - 1)) * (this.lonBounds[1] - this.lonBounds[0])
     );
 
-    // Operational forecast timeline starting from current live UTC date
-    const baseDate = new Date();
-    baseDate.setUTCMinutes(0, 0, 0);
-    const utcHours = baseDate.getUTCHours();
-    const cycleHour = Math.floor(utcHours / 6) * 6; // Synoptic hours 00, 06, 12, 18 UTC
-    baseDate.setUTCHours(cycleHour);
+    // Live synoptic observation timeline strictly within TODAY (00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00 UTC)
+    const today = new Date();
+    const year = today.getUTCFullYear();
+    const month = today.getUTCMonth();
+    const day = today.getUTCDate();
 
+    // 8 synoptic observation time slices throughout today (every 3 hours: 00:00 to 21:00 UTC)
     this.times = Array.from({ length: this.timeSteps }, (_, i) => {
-      const d = new Date(baseDate.getTime());
-      d.setUTCHours(d.getUTCHours() + i * 6);
+      const hour = (i * 3) % 24;
+      const d = new Date(Date.UTC(year, month, day, hour, 0, 0));
       return d.toISOString();
     });
 

@@ -1,9 +1,9 @@
 export class TimelinePlayer {
-  constructor(container, timeSteps = [], onTimeChange) {
+  constructor(container, timeSteps = [], onTimeChange, initialIdx = 0) {
     this.container = container;
     this.timeSteps = timeSteps;
     this.onTimeChange = onTimeChange;
-    this.currentIdx = 0;
+    this.currentIdx = Math.min(Math.max(0, initialIdx), Math.max(0, timeSteps.length - 1));
     this.isPlaying = false;
     this.playbackSpeed = 1200; // ms
     this.timer = null;
@@ -32,17 +32,17 @@ export class TimelinePlayer {
 
         <!-- Timeline Scrubber Range -->
         <div class="flex items-center gap-1 sm:gap-2 pl-2 sm:pl-3 border-l border-slate-700">
-          <input id="slider-timeline" type="range" min="0" max="${Math.max(0, this.timeSteps.length - 1)}" value="0" class="w-16 xs:w-24 sm:w-36 md:w-44 accent-cyan-400 cursor-pointer">
+          <input id="slider-timeline" type="range" min="0" max="${Math.max(0, this.timeSteps.length - 1)}" value="${this.currentIdx}" class="w-16 xs:w-24 sm:w-36 md:w-44 accent-cyan-400 cursor-pointer">
         </div>
 
         <!-- Timestamp readout -->
         <div class="flex flex-col font-mono text-left pl-2 sm:pl-3 border-l border-slate-700 min-w-[75px] sm:min-w-[125px]">
           <div class="flex items-center gap-1">
             <span class="text-[9px] sm:text-[10px] text-slate-400">Step:</span>
-            <span id="label-step" class="text-cyan-400 font-bold text-[10px] sm:text-xs">1 / ${this.timeSteps.length}</span>
+            <span id="label-step" class="text-cyan-400 font-bold text-[10px] sm:text-xs">${this.currentIdx + 1} / ${this.timeSteps.length}</span>
           </div>
           <span id="label-timestamp" class="text-[8px] sm:text-[9px] text-slate-300 font-semibold truncate max-w-[85px] sm:max-w-none">
-            ${this.formatTime(this.timeSteps[0])}
+            ${this.formatTime(this.timeSteps[this.currentIdx] || this.timeSteps[0])}
           </span>
         </div>
       </div>
