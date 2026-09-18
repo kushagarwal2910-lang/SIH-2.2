@@ -27,6 +27,9 @@ describe('ValidationEngine', () => {
     expect(report.mission_id).toBe(glider.mission_id);
     expect(report.metrics).toHaveProperty('rmse');
     expect(report.metrics).toHaveProperty('bias');
+    expect(report.metrics).toHaveProperty('pearsonR');
+    expect(report.metrics.pearsonR).toBeGreaterThan(0.5);
     expect(report.comparison.length).toBe(glider.waypoints.length);
   });
 });
+

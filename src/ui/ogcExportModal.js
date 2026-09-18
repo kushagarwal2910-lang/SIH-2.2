@@ -85,11 +85,11 @@ export class OgcExportModal {
 
       ['tab-btn-wms', 'tab-btn-geojson', 'tab-btn-cf'].forEach((id) => {
         const btn = document.getElementById(id);
-        btn.className = 'px-3 py-1.5 rounded-t-lg font-bold text-xs text-slate-400 hover:text-white cursor-pointer';
+        btn.className = 'px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-t-lg font-bold text-[10px] sm:text-xs text-slate-400 hover:text-white cursor-pointer';
       });
 
       const activeId = mode === 'WMS' ? 'tab-btn-wms' : mode === 'GEOJSON' ? 'tab-btn-geojson' : 'tab-btn-cf';
-      document.getElementById(activeId).className = 'px-3 py-1.5 rounded-t-lg font-bold text-xs bg-slate-800 text-emerald-400 border-b-2 border-emerald-400 cursor-pointer';
+      document.getElementById(activeId).className = 'px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-t-lg font-bold text-[10px] sm:text-xs bg-slate-800 text-emerald-400 border-b-2 border-emerald-400 cursor-pointer';
     };
 
     setContent('WMS', wmsXml, 'incois_wms_capabilities.xml', 'text/xml');

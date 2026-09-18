@@ -137,6 +137,28 @@ export class ValidationEngine {
     const rmse = n > 0 ? Math.sqrt(sumSqDiff / n) : 0;
     const bias = n > 0 ? sumDiff / n : 0;
 
+    // Pearson Correlation (r)
+    let pearsonR = 1.0;
+    if (n > 2) {
+      const meanObs = obsArr.reduce((a, b) => a + b, 0) / n;
+      const meanMod = modArr.reduce((a, b) => a + b, 0) / n;
+
+      let num = 0;
+      let denObs = 0;
+      let denMod = 0;
+
+      for (let i = 0; i < n; i++) {
+        const oDiff = obsArr[i] - meanObs;
+        const mDiff = modArr[i] - meanMod;
+        num += oDiff * mDiff;
+        denObs += oDiff * oDiff;
+        denMod += mDiff * mDiff;
+      }
+
+      const denom = Math.sqrt(denObs * denMod);
+      pearsonR = denom > 0 ? num / denom : 1.0;
+    }
+
     return {
       mission_id: glider.mission_id,
       mission_name: glider.mission_name || glider.mission_id,
@@ -145,9 +167,11 @@ export class ValidationEngine {
       metrics: {
         rmse: Number(rmse.toFixed(3)),
         bias: Number(bias.toFixed(3)),
+        pearsonR: Number(pearsonR.toFixed(3)),
         point_count: n,
       },
       comparison,
     };
   }
 }
+
