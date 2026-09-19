@@ -28,30 +28,6 @@ This platform solves this by providing a **zero-install, browser-native 3D digit
 
 ---
 
-## 🖼️ Screenshots
-
-<div align="center">
-
-| 3D Volumetric Ocean Visualization | Variable Switching & Colorbar |
-| :---: | :---: |
-| ![Main View](docs/screenshots/main_3d_view.png) | ![Variable Switching](docs/screenshots/variable_switching.png) |
-
-| Isosurface Extraction (Thermocline) | Vertical Transect Cross-Section |
-| :---: | :---: |
-| ![Isosurface](docs/screenshots/isosurface_mode.png) | ![Transect](docs/screenshots/vertical_transect.png) |
-
-| Model–Observation Validation Engine | Live Argo Float Ingestion |
-| :---: | :---: |
-| ![Validation](docs/screenshots/validation_engine.png) | ![Live Argo](docs/screenshots/live_argo_floats.png) |
-
-| Multi-Format Data Ingestion | Guided Science Story Mode |
-| :---: | :---: |
-| ![Data Ingestion](docs/screenshots/data_ingestion.png) | ![Story Mode](docs/screenshots/story_mode.png) |
-
-</div>
-
----
-
 ## ✨ Key Features
 
 ### 1. GPU-Accelerated 3D Volume Raymarching
@@ -385,13 +361,7 @@ The project includes a comprehensive unit test suite using **Vitest**:
 
 ## 👥 Team
 
-Developed for the **Smart India Hackathon 2026** by our team under the **Ministry of Earth Sciences (MoES) / INCOIS** problem statement track.
-
----
-
-## 📄 License
-
-This project is open-source and available under the [MIT License](LICENSE).
+Developed for the **Smart India Hackathon 2026** by NextBit team under the **Ministry of Earth Sciences (MoES) / INCOIS** problem statement track.
 
 ---
 
